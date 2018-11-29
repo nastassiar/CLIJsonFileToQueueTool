@@ -1,0 +1,14 @@
+{
+    "jobType": "geo",
+    "project": "testing",
+    "customer": "microsoft",
+    "region":"us",
+    "arguments": {
+        "usecase": "",
+        "process": "",
+        "inputs": "",
+        "sensor": "",
+        "basename": "",
+        "depths": ""
+    }
+}

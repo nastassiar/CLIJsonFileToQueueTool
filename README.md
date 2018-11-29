@@ -38,3 +38,11 @@ Customer and project names must be between 2 and 14 characters and alphanumberic
 ```
 dotnet run hii project-med.json
 ```
+
+# Issues?
+## dotnet: command not found 
+Looks like you don't have dotnet install!
+
+For Linux subsystem on windows: https://weblog.west-wind.com/posts/2017/Apr/13/Running-NET-Core-Apps-under-Windows-Subsystem-for-Linux-Bash-for-Windows
+
+For everything else: https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial#linuxubuntu

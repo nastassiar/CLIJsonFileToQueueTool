@@ -1,5 +1,5 @@
 # Automation
-HII-Azure cloud processing automation
+CLI tool for pushing a json file to a queue in Azure.
 
 *Before starting fill in the appsettings.json file with the storage account name and storage account key of the storage account where the queue lives.*
 

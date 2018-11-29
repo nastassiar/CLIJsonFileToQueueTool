@@ -10,8 +10,6 @@ namespace hii.automation
     using System.IO;
     using System.Linq;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Configuration.FileExtensions;
-    using Microsoft.Extensions.Configuration.Json;
 
     public class Program
     {
@@ -38,7 +36,7 @@ namespace hii.automation
             }
             for (int i=0;i<args.Length;i++)
             {
-                Console.WriteLine("\narg #" + i.ToString() +":" + args[i]);
+                Console.WriteLine("\narg " + i.ToString() +":" + args[i]);
             }
             var filePath = args[1];
             Console.WriteLine(File.Exists(filePath) ? "File exists." : "File does not exist.");
@@ -82,6 +80,13 @@ namespace hii.automation
             string inputAccountName = Configuration["accountName"];
             string inputAccountKey = Configuration["accountKey"];
             string queueName = Configuration["queueName"];
+            if (string.IsNullOrEmpty(inputAccountName) || string.IsNullOrEmpty(inputAccountKey) || string.IsNullOrEmpty(queueName))
+            {
+                Console.WriteLine("Fill in the accountName, accountKey and queueName in the appsettings.json file.");
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey(true);
+                return;
+            }
 
             if (String.IsNullOrEmpty(job.jobType))
             {

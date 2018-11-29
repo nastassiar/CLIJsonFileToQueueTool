@@ -10,4 +10,10 @@
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

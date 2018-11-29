@@ -4,11 +4,10 @@
     "customer": "microsoft",
     "region":"us",
     "arguments": {
-        "usecase": "",
+        "app": "",
         "process": "",
         "inputs": "",
-        "sensor": "",
-        "basename": "",
-        "depths": ""
+        "sample": "",
+        "stain": ""
     }
 }

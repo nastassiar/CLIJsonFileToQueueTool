@@ -67,9 +67,9 @@ namespace hii.automation
                 return;
             }
             // Make sure the customer name fits the paramters 
-            if (job.customer.Length > 14 || job.customer.Length < 2 || !job.customer.All(char.IsLetterOrDigit))
+            if (job.customer.Length > 14 || job.customer.Length < 3 || !job.customer.All(char.IsLetterOrDigit))
             {
-                Console.WriteLine("Customer name must be between 2 and 14 characters and only contain alpha numeric characters.");
+                Console.WriteLine("Customer name must be between 3 and 14 characters and only contain alpha numeric characters.");
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
                 return;
@@ -112,9 +112,9 @@ namespace hii.automation
                 else
                 {
                     // If GEO or MED Need the project name
-                    if (String.IsNullOrEmpty(job.project) || job.project.Length > 14 || job.project.Length < 2 || !job.project.All(char.IsLetterOrDigit))
+                    if (String.IsNullOrEmpty(job.project) || job.project.Length > 14 || job.project.Length < 3 || !job.project.All(char.IsLetterOrDigit))
                     {
-                        Console.WriteLine("Project name must be between 2 and 14 characters and only contain alpha numeric characters.");
+                        Console.WriteLine("Project name must be between 3 and 14 characters and only contain alpha numeric characters.");
                         Console.WriteLine("Press any key to exit.");
                         Console.ReadKey(true);
                         return;

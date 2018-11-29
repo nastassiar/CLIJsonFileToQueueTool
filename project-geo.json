@@ -4,7 +4,7 @@
     "customer": "microsoft",
     "region":"us",
     "arguments": {
-        "usecase": "rocks",
+        "app": "rocks",
         "process": "superrocks",
         "inputs": "awesomerocks",
         "sensor": "rockstuff",

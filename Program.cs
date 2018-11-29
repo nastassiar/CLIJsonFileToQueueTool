@@ -10,6 +10,7 @@ namespace hii.automation
     using System.IO;
     using System.Linq;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Configuration.Json;
 
     public class Program
     {
@@ -18,28 +19,24 @@ namespace hii.automation
         public static void Main(string[] args)
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
-
-            if (null == args || 0 >= args.Length)
-            {
-                UnknownCommands();
-                return;
-            }
-
-             if (args.Length < 1)
+            
+            if (null == args || 0 >= args.Length || args.Length < 1)
             {
                 Console.WriteLine("Arguments should be sent in the following order: <Path_To_Json_File>");
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
                 return;
             }
+
             for (int i=0;i<args.Length;i++)
             {
                 Console.WriteLine("\narg " + i.ToString() +":" + args[i]);
             }
+            
+
             var filePath = args[1];
-            Console.WriteLine(File.Exists(filePath) ? "File exists." : "File does not exist.");
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("File does not exist. Please check "+filePath);
@@ -77,9 +74,12 @@ namespace hii.automation
                 Console.ReadKey(true);
                 return;
             }
+            job.customer = job.customer.ToLower();
+            
+            string inputAccountKey = Configuration["accountKey"]; 
             string inputAccountName = Configuration["accountName"];
-            string inputAccountKey = Configuration["accountKey"];
             string queueName = Configuration["queueName"];
+
             if (string.IsNullOrEmpty(inputAccountName) || string.IsNullOrEmpty(inputAccountKey) || string.IsNullOrEmpty(queueName))
             {
                 Console.WriteLine("Fill in the accountName, accountKey and queueName in the appsettings.json file.");
@@ -107,7 +107,7 @@ namespace hii.automation
                 }
                 else if (job.jobType == "newcustomer")
                 {
-                    Console.WriteLine("Creating new customer: "+job.customer);
+                    Console.WriteLine("\nCreating new customer: " + job.customer+"...");
                 }
                 else
                 {
@@ -119,7 +119,8 @@ namespace hii.automation
                         Console.ReadKey(true);
                         return;
                     }
-                    Console.WriteLine("Starting new job for project "+job.project+" for customer "+job.customer);
+                    job.project = job.project.ToLower();
+                    Console.WriteLine("\nStarting new job for project " + job.project+" for customer "+job.customer+"...");
                 }
             }
             if (String.IsNullOrEmpty(job.region))
@@ -141,27 +142,18 @@ namespace hii.automation
                 }
                 else
                 {
-                    Console.WriteLine("Job region set to :"+job.region);
+                    Console.WriteLine("\nJob region set to :" + job.region+"...");
                 }
             }
 
             // TODO: Add check for Parameters based on the job type
             
             //Send Message to Queue
-            CloudQueue queue = CreateQueueAsync(inputAccountName,inputAccountKey, queueName).Result;
+            CloudQueue queue = CreateQueueAsync(inputAccountName,inputAccountKey,queueName).Result;
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(job);
             InsertMessage(queue,json).Wait();
-
-            Console.WriteLine("Running project task.");
-            Console.WriteLine("Press any key to exit.");
+            Console.WriteLine("\nGood to go! Press any key to exit!");
             Console.ReadKey(true);
-        }
-
-        private static void UnknownCommands()
-        {
-            Console.WriteLine("Invalid arguments.");
-            Console.WriteLine("\t'customer' or 'c': create new customer");
-            Console.WriteLine("\t'project' or 'p': run new project");
         }
 
         private static async Task<CloudQueue> CreateQueueAsync(string accountName, string accountKey, string queueName)

@@ -4,11 +4,11 @@
     "customer": "microsoft",
     "region":"us",
     "arguments": {
-        "usecase": "",
-        "process": "",
-        "inputs": "",
-        "sensor": "",
-        "basename": "",
-        "depths": ""
+        "usecase": "rocks",
+        "process": "superrocks",
+        "inputs": "awesomerocks",
+        "sensor": "rockstuff",
+        "basename": "baserocks",
+        "depths": "superdeep"
     }
 }

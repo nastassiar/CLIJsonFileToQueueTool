@@ -1,7 +1,7 @@
 {
     "jobType": "geo",
     "project": "testing",
-    "customer": "microsoft",
+    "customer": "bob",
     "region":"us",
     "arguments": {
         "app": "rocks",

@@ -29,21 +29,21 @@ namespace hii.automation
                 Console.ReadKey(true);
                 return;
             }
-
-            for (int i=0;i<args.Length;i++)
+            var filePath = args[0];
+            // Adding in check for filepath to account for docker not counting tag as an argument
+            string extension = Path.GetExtension(filePath);
+            if (String.IsNullOrEmpty(extension) && args.Length >= 2)
             {
-                Console.WriteLine("\narg " + i.ToString() +":" + args[i]);
+                filePath =  args[1];
             }
-            
-
-            var filePath = args[1];
             if (!File.Exists(filePath))
             {
-                Console.WriteLine("File does not exist. Please check "+filePath);
+                Console.WriteLine("File does not exist. Please check "+filePath+ " exists and rerun.");
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
                 return;
             }
+            Console.WriteLine("\nPulling data from "+filePath+ "...");
             Job job = null;
             using (StreamReader r = new StreamReader(filePath))
             {
@@ -53,7 +53,7 @@ namespace hii.automation
             // Check to make sure the input is valid!
             if (job == null)
             {
-                Console.WriteLine("Job was null, please check the input : "+filePath);
+                Console.WriteLine("Job was null, please check the input : "+filePath + " and rerun.");
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
                 return;
@@ -75,7 +75,11 @@ namespace hii.automation
                 return;
             }
             job.customer = job.customer.ToLower();
-            
+            if (Configuration == null)
+            {
+                Console.WriteLine("SET TO NULL FOR TESTING.");
+                return;
+            }
             string inputAccountKey = Configuration["accountKey"]; 
             string inputAccountName = Configuration["accountName"];
             string queueName = Configuration["queueName"];
@@ -86,6 +90,24 @@ namespace hii.automation
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
                 return;
+            }
+            if (String.IsNullOrEmpty(job.region))
+            {
+                Console.WriteLine("Job region must be EU, or US. Cannot be empty");
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey(true);
+                return;
+            }
+            else 
+            {
+                job.region = job.region.ToLower();
+                if (!(new[] {"us", "eu"}.Contains(job.region)))
+                {
+                    Console.WriteLine("Job region must be EU, or US");
+                    Console.WriteLine("Press any key to exit.");
+                    Console.ReadKey(true);
+                    return;
+                }
             }
 
             if (String.IsNullOrEmpty(job.jobType))
@@ -107,7 +129,7 @@ namespace hii.automation
                 }
                 else if (job.jobType == "newcustomer")
                 {
-                    Console.WriteLine("\nCreating new customer: " + job.customer+"...");
+                    Console.WriteLine("\nCreating new customer " + job.customer+" in "+job.region+" region...");
                 }
                 else
                 {
@@ -120,31 +142,10 @@ namespace hii.automation
                         return;
                     }
                     job.project = job.project.ToLower();
-                    Console.WriteLine("\nStarting new job for project " + job.project+" for customer "+job.customer+"...");
+                    Console.WriteLine("\nStarting new "+job.jobType+" job for project " + job.project+" for customer "+job.customer+" in "+job.region+" region...");
                 }
             }
-            if (String.IsNullOrEmpty(job.region))
-            {
-                Console.WriteLine("Job region must be EU, or US. Cannot be empty");
-                Console.WriteLine("Press any key to exit.");
-                Console.ReadKey(true);
-                return;
-            }
-            else 
-            {
-                job.region = job.region.ToLower();
-                if (!(new[] {"us", "eu"}.Contains(job.region)))
-                {
-                    Console.WriteLine("Job region must be EU, or US");
-                    Console.WriteLine("Press any key to exit.");
-                    Console.ReadKey(true);
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine("\nJob region set to :" + job.region+"...");
-                }
-            }
+            
 
             // TODO: Add check for Parameters based on the job type
             

@@ -1,0 +1,13 @@
+{
+    "jobType": "med",
+    "project": "testing",
+    "customer": "bob",
+    "region":"us",
+    "arguments": {
+        "app": "app",
+        "process": "process",
+        "inputs": "inputs",
+        "sample": "sample",
+        "stain": "stain"
+    }
+}
